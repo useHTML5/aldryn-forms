@@ -11,7 +11,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from cms.utils.page import get_page_from_request, get_page_from_path
 
-@method_decorator(csrf_exempt, name='dispatch')
+
+# @method_decorator(csrf_exempt, name='dispatch')
+
 class AjaxSubmit(FormView):
     # template_name = 'aldryn_forms/form.html'
 
@@ -44,6 +46,10 @@ class AjaxSubmit(FormView):
                 return HttpResponseRedirect(success_url)
             context['post_success'] = True
         return render(request, 'aldryn_forms/form.html', context)
+
+
+def csrf_token_view(request):
+    return render(request, 'aldryn_forms/csrf_token.html')
 
 
 def submit_form_view(request):

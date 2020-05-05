@@ -168,6 +168,7 @@ class FormPlugin(FieldContainer):
         kwargs = {
             'form_plugin': instance,
             'request': request,
+            'prefix': instance.prefix
         }
 
         if request.POST.get('form_plugin_id') == str(instance.id) and request.method in ('POST', 'PUT'):

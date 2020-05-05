@@ -2,8 +2,8 @@
 
 <form method="post"
       {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}
-    {% if instance.form_attributes %} {{ instance.form_attributes_str }}{% endif %}
-    {% if instance.custom_classes %} class="{{ instance.custom_classes }}"{% endif %}>
+        {% if instance.form_attributes %} {{ instance.form_attributes_str }}{% endif %}
+        {% if instance.custom_classes %} class="{{ instance.custom_classes }}"{% endif %}>
 
     {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
@@ -24,8 +24,8 @@
             {% endif %}
         </p>
     {% else %}
-        {#        {% csrf_token %}#}
         <input id="page_path_{{ plugin.id }}" type="hidden" name="page_path" value="{{ request.path }}">
+        <input type="hidden" name="form_plugin_id" value="{{ instance.id }}">
         {% for plugin in instance.child_plugin_instances %}
             {% render_plugin plugin %}
         {% endfor %}
@@ -65,16 +65,28 @@
         }
 
         $(function () {
-            $("input[name=form_plugin_id]").each(function (index) {
-                var form = $(this).parents('form');
+            $("input[name=page_path]").each(function (index) {
+                var form = $(this).parents('form').get(0);
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url 'aldryn_forms_csrf_token' %}',
+                    success: function (response) {
+                        $(form).append(response);
+                    },
+                });
+            });
+            $("input[name=page_path]").each(function (index) {
+                var form = $(this).parents('form').get(0);
                 $(form).submit(function (event) {
                     event.preventDefault();
+                    var data = new FormData(form);
                     $(form).slideToggle();
                     $.ajax({
                         type: 'POST',
-                        headers: {'X-CSRFToken': getCookie('csrftoken')},
-                        data: form.serialize(),
-                        url: {% url 'aldryn_forms_ajax_submit_form' %},
+                        data: data,
+                        processData: false,  // Сообщить jQuery не передавать эти данные
+                        contentType: false,
+                        url: '{% url 'aldryn_forms_ajax_submit_form' %}',
                         success: function (response) {
                             $(form).html(response);
                             $(form).slideToggle();

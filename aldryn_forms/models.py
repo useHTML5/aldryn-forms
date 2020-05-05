@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.six import text_type
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 
 from cms.models.fields import PageField
 from cms.models.pluginmodel import CMSPlugin
@@ -27,9 +28,7 @@ from .utils import (
     ALDRYN_FORMS_ACTION_BACKEND_KEY_MAX_SIZE, action_backend_choices,
 )
 
-
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-
 
 # Once djangoCMS < 3.3.1 support is dropped
 # Remove the explicit cmsplugin_ptr field declarations
@@ -70,7 +69,6 @@ BaseSerializedFormField = namedtuple(
 
 
 class SerializedFormField(BaseSerializedFormField):
-
     # For _asdict() with Py3K
     __slots__ = ()
 
@@ -187,6 +185,11 @@ class BaseFormPlugin(CMSPlugin):
 
     def __str__(self):
         return self.name
+
+    @property
+    def prefix(self):
+        return self.id
+        # return slugify(self.id, allow_unicode=True)
 
     @property
     def page(self):
@@ -333,7 +336,6 @@ class BaseFormPlugin(CMSPlugin):
 
 @python_2_unicode_compatible
 class FormPlugin(BaseFormPlugin):
-
     class Meta:
         abstract = False
 
@@ -343,7 +345,6 @@ class FormPlugin(BaseFormPlugin):
 
 @python_2_unicode_compatible
 class FieldsetPlugin(CMSPlugin):
-
     legend = models.CharField(_('Legend'), max_length=255, blank=True)
     custom_classes = models.CharField(
         verbose_name=_('custom css classes'), max_length=255, blank=True)
@@ -522,7 +523,7 @@ class Option(models.Model):
     class Meta:
         verbose_name = _('Option')
         verbose_name_plural = _('Options')
-        ordering = ('position', )
+        ordering = ('position',)
 
     def __str__(self):
         return self.value
