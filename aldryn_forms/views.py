@@ -9,12 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-try:
-    from cms.utils.page import get_page_from_request, get_page_from_path
-except ImportError:
-    # for django-cms<3.5
-    from cms.utils.page_resolver import get_page_from_request, get_page_from_path
-
+from cms.utils.page import get_page_from_request, get_page_from_path
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AjaxSubmit(FormView):
