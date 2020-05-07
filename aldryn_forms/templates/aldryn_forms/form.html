@@ -24,7 +24,7 @@
             {% endif %}
         </p>
     {% else %}
-        <input id="page_path_{{ plugin.id }}" type="hidden" name="page_path" value="{{ request.path }}">
+        <input id="page_path_{{ instance.id }}" type="hidden" name="form_page_path" value="{{ request.path }}">
         <input type="hidden" name="form_plugin_id" value="{{ instance.id }}">
         {% for plugin in instance.child_plugin_instances %}
             {% render_plugin plugin %}
@@ -65,7 +65,7 @@
         }
 
         $(function () {
-            $("input[name=page_path]").each(function (index) {
+            $("input[name=form_page_path]").each(function (index) {
                 var form = $(this).parents('form').get(0);
                 $.ajax({
                     type: 'GET',
@@ -75,7 +75,7 @@
                     },
                 });
             });
-            $("input[name=page_path]").each(function (index) {
+            $("input[name=form_page_path]").each(function (index) {
                 var form = $(this).parents('form').get(0);
                 $(form).submit(function (event) {
                     event.preventDefault();

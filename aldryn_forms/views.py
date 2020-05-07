@@ -18,7 +18,7 @@ class AjaxSubmit(FormView):
     # template_name = 'aldryn_forms/form.html'
 
     def post(self, request, *args, **kwargs):
-        page_path = request.POST.get('page_path', '').strip('/')
+        page_path = request.POST.get('form_page_path', '').strip('/')
         cms_page = get_page_from_path(get_current_site(request), page_path)
         if not cms_page:
             return HttpResponseBadRequest('no cms_page')
