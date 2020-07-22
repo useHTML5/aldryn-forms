@@ -5,7 +5,6 @@ from functools import partial
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,7 +18,6 @@ from .helpers import (
     get_email_template_name, get_theme_template_name, render_text,
 )
 
-
 EMAIL_THEMES = getattr(
     settings,
     "ALDRYN_FORMS_EMAIL_THEMES",
@@ -28,7 +26,6 @@ EMAIL_THEMES = getattr(
 
 
 class EmailNotificationFormPlugin(FormPlugin):
-
     class Meta:
         proxy = True
 
@@ -53,9 +50,7 @@ class EmailNotificationFormPlugin(FormPlugin):
         return choices
 
 
-@python_2_unicode_compatible
 class EmailNotification(models.Model):
-
     class Meta:
         verbose_name = _('Email notification')
         verbose_name_plural = _('Email notifications')
