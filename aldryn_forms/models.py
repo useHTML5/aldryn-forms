@@ -13,7 +13,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.utils.functional import cached_property
-from django.utils.six import text_type
 from django.utils.translation import ugettext_lazy as _
 from djangocms_attributes_field.fields import AttributesField
 from filer.fields.folder import FilerFolderField
@@ -338,7 +337,7 @@ class FieldsetPlugin(CMSPlugin):
     )
 
     def __str__(self):
-        return self.legend or text_type(self.pk)
+        return self.legend or str(self.pk)
 
 
 class FieldPluginBase(CMSPlugin):
