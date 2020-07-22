@@ -5,7 +5,8 @@ import re
 import sys
 
 from django.conf import settings
-from django.utils import formats, six
+from django.utils import formats
+import six
 from django.utils.translation import ugettext as _
 
 
