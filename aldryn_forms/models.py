@@ -12,7 +12,6 @@ from cms.utils.plugins import downcast_plugins
 from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.six import text_type
 from django.utils.translation import ugettext_lazy as _
@@ -67,7 +66,6 @@ BaseSerializedFormField = namedtuple(
 
 
 class SerializedFormField(BaseSerializedFormField):
-
     # For _asdict() with Py3K
     __slots__ = ()
 
@@ -91,7 +89,6 @@ class SerializedFormField(BaseSerializedFormField):
         return self.name.rpartition('_')[0]
 
 
-@python_2_unicode_compatible
 class BaseFormPlugin(CMSPlugin):
     FALLBACK_FORM_TEMPLATE = 'aldryn_forms/form.html'
     DEFAULT_FORM_TEMPLATE = getattr(
@@ -324,9 +321,7 @@ class BaseFormPlugin(CMSPlugin):
         return self._form_elements
 
 
-@python_2_unicode_compatible
 class FormPlugin(BaseFormPlugin):
-
     class Meta:
         abstract = False
 
@@ -334,9 +329,7 @@ class FormPlugin(BaseFormPlugin):
         return self.name
 
 
-@python_2_unicode_compatible
 class FieldsetPlugin(CMSPlugin):
-
     legend = models.CharField(_('Legend'), max_length=255, blank=True)
     custom_classes = models.CharField(
         verbose_name=_('custom css classes'), max_length=255, blank=True)
@@ -348,7 +341,6 @@ class FieldsetPlugin(CMSPlugin):
         return self.legend or text_type(self.pk)
 
 
-@python_2_unicode_compatible
 class FieldPluginBase(CMSPlugin):
     name = models.CharField(
         _('Name'),
@@ -505,7 +497,6 @@ class ImageUploadFieldPlugin(FileFieldPluginBase):
     )
 
 
-@python_2_unicode_compatible
 class Option(models.Model):
     field = models.ForeignKey(FieldPlugin, editable=False, on_delete=models.CASCADE)
     value = models.CharField(_('Value'), max_length=255)
@@ -515,7 +506,7 @@ class Option(models.Model):
     class Meta:
         verbose_name = _('Option')
         verbose_name_plural = _('Options')
-        ordering = ('position', )
+        ordering = ('position',)
 
     def __str__(self):
         return self.value
@@ -531,7 +522,6 @@ class Option(models.Model):
         return super(Option, self).save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class FormButtonPlugin(CMSPlugin):
     label = models.CharField(_('Label'), max_length=255)
     custom_classes = models.CharField(
@@ -544,7 +534,6 @@ class FormButtonPlugin(CMSPlugin):
         return self.label
 
 
-@python_2_unicode_compatible
 class FormSubmission(models.Model):
     name = models.CharField(
         max_length=255,
