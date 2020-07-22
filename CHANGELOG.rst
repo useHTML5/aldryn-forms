@@ -3,6 +3,26 @@ Changelog
 =========
 
 
+5.0.4 (2020-05-19)
+==================
+
+* Fix admin panel export in Django 2
+
+
+5.0.1 (2020-01-06)
+==================
+
+* Add autoescape to users emails template
+
+
+5.0.0 (2019-12-06)
+==================
+
+* Added support for Django 2.2
+* Dropped support for Django 1.11 and Python 2
+* Made django-simple-captcha package optional
+
+
 4.0.1 (2019-02-12)
 ==================
 
