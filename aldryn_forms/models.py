@@ -182,6 +182,11 @@ class BaseFormPlugin(CMSPlugin):
         return self.name
 
     @property
+    def prefix(self):
+        return self.id
+        # return slugify(self.id, allow_unicode=True)
+
+    @property
     def page(self):
         warnings.warn(
             'The "page" field has been renamed to redirect_page '
